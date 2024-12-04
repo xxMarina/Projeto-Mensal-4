@@ -21,7 +21,6 @@ async function loadBoards() {
 }
 
 let selectedBoardId = null; // Variável global para armazenar o ID do quadro selecionado
-
 function populateBoardsDropdown(boards) {
 	boards.forEach((board) => {
 		const listItem = document.createElement("li");
@@ -234,40 +233,12 @@ addColumnButton.addEventListener("click", () => {
 	createNewColumn();
 });
 
-// function saveColumn(name, boardId) {
-// 	const payload = {
-// 		BoardId: boardId, // O ID do quadro
-// 		Name: name, // O nome da coluna
-// 		Position: 0, // A posição da coluna (ajuste conforme necessário)
-// 		IsActive: true, // Defina como true ou false conforme necessário
-// 	};
-
-// 	console.log("Payload enviado:", JSON.stringify(payload, null, 2)); // Log do payload
-
-// 	return fetch(`${API_BASE_URL}/Column`, {
-// 		method: "POST",
-// 		headers: { "Content-Type": "application/json" },
-// 		body: JSON.stringify(payload),
-// 	})
-// 		.then((response) => {
-// 			if (!response.ok) {
-// 				return response.json().then((err) => {
-// 					console.error("Erro ao salvar coluna:", err);
-// 					throw new Error("Erro ao salvar coluna: " + JSON.stringify(err));
-// 				});
-// 			}
-// 			return response.json();
-// 		})
-// 		.catch((error) => {
-// 			console.error("Erro ao salvar coluna:", error);
-// 		});
-// }
 function saveColumn(name, boardId) {
 	const payload = {
-		BoardId: boardId, // O ID do quadro
-		Name: name, // O nome da coluna
-		Position: 1, // A posição da coluna (ajuste conforme necessário)
-		IsActive: true, // Defina como true ou false conforme necessário
+		BoardId: boardId,
+		Name: name,
+		Position: 1,
+		IsActive: true,
 	};
 
 	console.log("Payload enviado:", JSON.stringify(payload, null, 2)); // Log do payload
@@ -288,7 +259,7 @@ function saveColumn(name, boardId) {
 		})
 		.then((data) => {
 			console.log("Coluna salva com sucesso:", data);
-			return data; // Retorna os dados da nova coluna
+			return data;
 		})
 		.catch((error) => {
 			console.error("Erro ao salvar coluna:", error);
@@ -330,7 +301,7 @@ function createNewColumn() {
 			return;
 		}
 
-		console.log("Nome da coluna:", columnName); // Log do nome da coluna
+		console.log("Nome da coluna:", columnName);
 
 		saveColumn(columnName, selectedBoardId).then((newColumn) => {
 			if (newColumn) {
@@ -374,101 +345,6 @@ function addColumnToLayout(column) {
 	columnItem.appendChild(columnBody);
 	boardLayout.appendChild(columnItem);
 }
-
-// function createNewColumn() {
-// 	// Cria um campo de input para o nome da nova coluna
-// 	const columnNameInput = document.createElement("input");
-// 	columnNameInput.type = "text";
-// 	columnNameInput.placeholder = "Nome da nova coluna";
-// 	columnNameInput.className = "form-control mb-1";
-
-// 	// Botão para salvar a nova coluna
-// 	const saveButton = document.createElement("button");
-// 	saveButton.className = "btn btn-success btn-sm btn-save";
-// 	saveButton.innerText = "Salvar";
-
-// 	// Botão para cancelar a criação da coluna
-// 	const cancelButton = document.createElement("button");
-// 	cancelButton.className = "btn btn-danger btn-sm btn-cancel m-1";
-// 	cancelButton.innerText = "Cancelar";
-
-// 	// Container para os inputs e botões
-// 	const columnEditor = document.createElement("div");
-// 	columnEditor.className = "column-editor";
-// 	columnEditor.appendChild(columnNameInput);
-// 	columnEditor.appendChild(saveButton);
-// 	columnEditor.appendChild(cancelButton);
-
-// 	// Ad iciona o editor ao layout do quadro
-// 	boardLayout.appendChild(columnEditor);
-
-// 	// Event listener para salvar a nova coluna
-// 	saveButton.addEventListener("click", () => {
-// 		const columnName = columnNameInput.value.trim();
-
-// 		if (columnName === "") {
-// 			alert("O nome da coluna não pode estar vazio.");
-// 			return;
-// 		}
-
-// 		// Salva a nova coluna no backend
-// 		saveColumn(columnName).then((newColumn) => {
-// 			if (newColumn) {
-// 				// Adiciona a nova coluna ao layout
-// 				addColumnToLayout(newColumn);
-// 				// Remove o editor de coluna
-// 				boardLayout.removeChild(columnEditor);
-// 			} else {
-// 				alert("Erro ao adicionar a coluna. Tente novamente.");
-// 			}
-// 		});
-// 	});
-
-// 	// Event listener para cancelar
-// 	cancelButton.addEventListener("click", () => {
-// 		boardLayout.removeChild(columnEditor);
-// 	});
-// }
-
-// function addColumnToLayout(column) {
-// 	if (!column || !column.Name || !column.Id) {
-// 		console.error("Coluna inválida:", column);
-// 		return; // Não prosseguir se a coluna não for válida
-// 	}
-
-// 	const columnItem = document.createElement("article");
-// 	columnItem.className = "column-item";
-
-// 	const columnHeader = document.createElement("header");
-// 	columnHeader.className = "column-header";
-// 	columnHeader.innerHTML = `<h5>${column.Name}</h5>`;
-
-// 	// Contêiner para as tarefas
-// 	const tasksContainer = document.createElement("div");
-// 	tasksContainer.className = "tasks-container";
-// 	tasksContainer.id = `tasks-${column.Id}`;
-
-// 	// Contêiner principal da coluna
-// 	const columnBody = document.createElement("div");
-// 	columnBody.className = "column-body";
-
-// 	// Botão "Novo Card"
-// 	const newCardButton = document.createElement("div");
-// 	newCardButton.className = "task-item new-card";
-// 	newCardButton.innerHTML = `
-//         <button class="btn btn-light btn-block w-100 d-block"> + Nova Tarefa </button>
-//     `;
-// 	newCardButton.addEventListener("click", () => {
-// 		createNewCard(column.Id);
-// 	});
-
-// 	// Adiciona os elementos à coluna
-// 	columnBody.appendChild(tasksContainer); // Contêiner de tarefas
-// 	columnBody.appendChild(newCardButton); // Botão "Novo Card"
-// 	columnItem.appendChild(columnHeader);
-// 	columnItem.appendChild(columnBody);
-// 	boardLayout.appendChild(columnItem);
-// }
 
 function init() {
 	loadUserName();
