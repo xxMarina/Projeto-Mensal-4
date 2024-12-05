@@ -78,3 +78,9 @@ body {
 	margin-bottom: 5px;
 	border-radius: 5px;
 }
+
+.fas.fa-trash-alt {
+	margin-left: 10px; /* Adiciona um espaço entre o título e o ícone */
+	cursor: pointer; /* Indica que o ícone é clicável */
+	color: red; /* Cor para o ícone, você pode mudar conforme necessário */
+}

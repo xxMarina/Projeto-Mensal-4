@@ -112,9 +112,10 @@ function fetchTasksByColumn(ColumnId) {
 		});
 }
 
-// Função para adicionar as tarefas dentro das colunas e validando
+// Função para adicionar tarefas a uma coluna
 function addTasksToColumn(ColumnId, tasks) {
 	const columnBody = document.getElementById(`tasks-${ColumnId}`);
+	columnBody.innerHTML = ""; // Limpa as tarefas atuais da coluna
 
 	tasks.forEach((task) => {
 		const taskItem = document.createElement("div");
@@ -123,11 +124,76 @@ function addTasksToColumn(ColumnId, tasks) {
             <h6>${task.Title || "Sem título"}</h6>
             <p>${task.Description || "Sem descrição"}</p>
         `;
-		columnBody.appendChild(taskItem);
+
+		// Adicionando o ID da tarefa ao item para facilitar a exclusão
+		taskItem.setAttribute("data-task-id", task.Id);
+
+		// Criando o ícone de lixeira para a exclusão da tarefa
+		const deleteIcon = document.createElement("i");
+		deleteIcon.className = "fas fa-trash-alt"; // Classe do ícone de lixeira
+		deleteIcon.style.cursor = "pointer"; // Tornar clicável
+
+		// Event listener para excluir a tarefa ao clicar no ícone
+		deleteIcon.addEventListener("click", () => {
+			deleteTask(task.Id, ColumnId); // Exclui a tarefa
+		});
+
+		// Adicionando o ícone de lixeira ao item da tarefa
+		taskItem.appendChild(deleteIcon);
+
+		columnBody.appendChild(taskItem); // Adiciona a tarefa na coluna
 	});
 }
 
-// Função para salvar as colunas cadastradas
+// Função para excluir a tarefa
+function deleteTask(taskId, ColumnId) {
+	const url = `${API_BASE_URL}/Task?TaskId=${taskId}`;
+	console.log(`Tentando excluir a tarefa na URL: ${url}`);
+
+	fetch(url, {
+		method: "DELETE", // Usando o método DELETE
+		headers: {
+			"Content-Type": "application/json",
+		},
+	})
+		.then((response) => {
+			if (!response.ok) {
+				throw new Error("Erro ao excluir tarefa");
+			}
+
+			// Removendo a tarefa do DOM imediatamente após a exclusão
+			const taskItems = document.querySelectorAll(`#tasks-${ColumnId} .task-item`);
+			taskItems.forEach((taskItem) => {
+				if (taskItem.getAttribute("data-task-id") === taskId.toString()) {
+					taskItem.remove(); // Remove a tarefa do DOM
+				}
+			});
+
+			console.log("Tarefa excluída com sucesso");
+
+			// Atualiza as tarefas da coluna para garantir que a exclusão seja refletida
+			updateBoard(ColumnId);
+		})
+		.catch((error) => {
+			console.error("Erro ao excluir tarefa:", error);
+		});
+}
+
+// Função para atualizar o quadro após a exclusão
+function updateBoard(ColumnId) {
+	const url = `${API_BASE_URL}/Tasks?ColumnId=${ColumnId}`;
+
+	fetch(url)
+		.then((response) => response.json())
+		.then((tasks) => {
+			// Atualiza as tarefas na coluna, apenas se a tarefa foi excluída
+			addTasksToColumn(ColumnId, tasks);
+		})
+		.catch((error) => {
+			console.error("Erro ao atualizar o quadro:", error);
+		});
+}
+
 function saveColumn(name, boardId) {
 	const payload = {
 		BoardId: boardId,
