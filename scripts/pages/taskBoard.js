@@ -33,7 +33,7 @@ function populateBoardsDropdown(boards) {
 		boardsList.appendChild(listItem);
 	});
 }
-
+//função para ler os boards por ID
 async function loadBoard(id) {
 	try {
 		const response = await fetch(`${API_BASE_URL}/ColumnByBoardId?BoardId=${id}`);
@@ -156,7 +156,6 @@ function createNewCard(columnId) {
 		// Remove o editor de tarefas
 		tasksContainer.removeChild(cardEditor);
 
-		// Aqui você pode incluir uma lógica para salvar a tarefa no backend
 		saveTask(columnId, title, description);
 	});
 
@@ -165,7 +164,7 @@ function createNewCard(columnId) {
 		tasksContainer.removeChild(cardEditor);
 	});
 }
-
+//salnado as tarefas
 function saveTask(columnId, title, description) {
 	// Lógica para salvar a tarefa no backend (exemplo)
 	fetch(`${API_BASE_URL}/Task`, {
@@ -196,7 +195,7 @@ function fetchTasksByColumn(columnId) {
 			return [];
 		});
 }
-
+//adicionando as tasks/tarefas dentro das colunas
 function addTasksToColumn(columnId, tasks) {
 	const columnBody = document.getElementById(`tasks-${columnId}`);
 
