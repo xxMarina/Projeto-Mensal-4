@@ -8,6 +8,7 @@ const boardTitle = document.getElementById("boardTitle");
 const boardLayout = document.getElementById("board");
 const themeToggle = document.getElementById("themeToggle");
 const addColumnButton = document.getElementById("addColumnButton");
+const addBoardButton = document.getElementById("addBoardButton");
 
 // Carrega o nome do usuário cadastrado no login, pegando do localStorage
 function loadUserName() {
@@ -387,6 +388,99 @@ function saveTask(columnId, title, description) {
 		})
 		.catch((error) => {
 			console.error("Erro ao salvar tarefa:", error);
+		});
+}
+
+// Adiciona o evento de clique no botão de adicionar quadro
+document.getElementById("addBoardButton").addEventListener("click", () => {
+	console.log("Botão de adicionar quadro clicado");
+	createNewBoard();
+});
+
+// Função para criar um novo quadro
+function createNewBoard() {
+	const boardContainer = document.getElementById("boardContainer");
+
+	if (!boardContainer) {
+		console.error("Elemento 'boardContainer' não encontrado!");
+		return;
+	}
+
+	const boardNameInput = document.createElement("input");
+	boardNameInput.type = "text";
+	boardNameInput.placeholder = "Nome do novo quadro";
+	boardNameInput.className = "form-control mb-1";
+
+	const saveButton = document.createElement("button");
+	saveButton.className = "btn btn-success btn-sm btn-save";
+	saveButton.innerText = "Salvar";
+
+	const cancelButton = document.createElement("button");
+	cancelButton.className = "btn btn-danger btn-sm btn-cancel m-1";
+	cancelButton.innerText = "Cancelar";
+
+	const boardEditor = document.createElement("div");
+	boardEditor.className = "board-editor";
+	boardEditor.appendChild(boardNameInput);
+	boardEditor.appendChild(saveButton);
+	boardEditor.appendChild(cancelButton);
+
+	// Adiciona o editor no boardContainer
+	boardContainer.appendChild(boardEditor);
+
+	// Salva o novo quadro
+	saveButton.addEventListener("click", () => {
+		const boardName = boardNameInput.value.trim();
+
+		if (boardName === "") {
+			alert("O nome do quadro não pode estar vazio.");
+			return;
+		}
+
+		saveBoard(boardName).then(() => {
+			loadBoards(); // Atualiza a lista de quadros após adicionar o novo quadro
+			boardContainer.removeChild(boardEditor); // Remove o editor após salvar
+		});
+	});
+
+	// Cancela a criação do quadro
+	cancelButton.addEventListener("click", () => {
+		boardContainer.removeChild(boardEditor);
+	});
+}
+
+// Função para salvar o novo quadro no backend
+function saveBoard(boardName) {
+	const payload = {
+		Name: boardName,
+		IsActive: true,
+		CreatedBy: 5,
+	};
+
+	console.log("Payload sendo enviado:", payload); // Para verificar antes de enviar
+
+	return fetch(`${API_BASE_URL}/Board`, {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify(payload),
+	})
+		.then((response) => {
+			if (!response.ok) {
+				return response.json().then((errorData) => {
+					console.error("Erro ao salvar o quadro:", errorData);
+					throw new Error("Erro ao salvar o quadro.");
+				});
+			}
+			return response.json();
+		})
+		.then((data) => {
+			console.log("Quadro salvo com sucesso:", data);
+			return data;
+		})
+		.catch((error) => {
+			console.error("Erro ao salvar o quadro:", error);
 		});
 }
 
