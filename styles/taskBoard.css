@@ -1,3 +1,8 @@
+body {
+	font-family: Arial, sans-serif;
+	margin: 20px;
+}
+
 .navbar-custom {
 	background-color: #00e88f;
 }
@@ -64,10 +69,6 @@
 	border-radius: 5px;
 }
 
-body {
-	font-family: Arial, sans-serif;
-	margin: 20px;
-}
 #task-list {
 	margin-top: 20px;
 }
