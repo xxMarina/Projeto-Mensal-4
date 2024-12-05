@@ -91,6 +91,15 @@ function populateColumns(columns) {
 	});
 }
 
+//add funcao para colunas
+const addColumnButton = document.getElementById("addColumnButton");
+
+addColumnButton.addEventListener("click", () => {
+	createNewColumn();
+});
+
+//função para add o titulo e descrição das tarefas quando clicado em add tarefas
+//com o addEventListener
 function createNewCard(columnId) {
 	const tasksContainer = document.getElementById(`tasks-${columnId}`);
 
@@ -164,7 +173,7 @@ function createNewCard(columnId) {
 		tasksContainer.removeChild(cardEditor);
 	});
 }
-//salnado as tarefas
+//salvando as tarefas
 function saveTask(columnId, title, description) {
 	// Lógica para salvar a tarefa no backend (exemplo)
 	fetch(`${API_BASE_URL}/Task`, {
@@ -195,7 +204,8 @@ function fetchTasksByColumn(columnId) {
 			return [];
 		});
 }
-//adicionando as tasks/tarefas dentro das colunas
+
+//adicionando as tasks/tarefas dentro das colunas e validando
 function addTasksToColumn(columnId, tasks) {
 	const columnBody = document.getElementById(`tasks-${columnId}`);
 
@@ -210,6 +220,7 @@ function addTasksToColumn(columnId, tasks) {
 	});
 }
 
+//carrega o nome do usuario cadastrado no login, pegando do local storage
 function loadUserName() {
 	const userName = getFromLocalStorage("user");
 	console.log(userName);
@@ -220,18 +231,13 @@ function loadUserName() {
 	}
 }
 
+//botão para logout de usuario, que ao clicar ele remove o usuario do localStorage e retorna a pagina de login
 logoutButton.addEventListener("click", () => {
 	localStorage.removeItem("user");
 	window.location.href = "index.html";
 });
 
-//add funcao para colunas
-const addColumnButton = document.getElementById("addColumnButton");
-
-addColumnButton.addEventListener("click", () => {
-	createNewColumn();
-});
-
+//Função para salvar as colunas cadastradas
 function saveColumn(name, boardId) {
 	const payload = {
 		BoardId: boardId,
@@ -265,6 +271,7 @@ function saveColumn(name, boardId) {
 		});
 }
 
+//Função para a criação de novas colunas
 function createNewColumn() {
 	const columnNameInput = document.createElement("input");
 	columnNameInput.type = "text";
@@ -317,6 +324,8 @@ function createNewColumn() {
 	});
 }
 
+//Função complemetar da createNewColumn
+//Onde esta função irá salvar a nova coluna e armazenar (nela mesma), e se a coluna ja existe irá retornar um erro
 function addColumnToLayout(column) {
 	if (!column || !column.Name || !column.Id) {
 		console.error("Coluna inválida:", column);
