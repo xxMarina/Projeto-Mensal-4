@@ -1,34 +1,7 @@
 body {
 	margin: 0;
 	font-family: Arial, sans-serif;
-	background-color: #ecebeb;
-	color: #333;
 }
 .hidden {
 	display: none;
-}
-
-body.light-theme {
-	background-color: #ffffff;
-	color: #000000;
-}
-
-body.dark-theme {
-	background-color: #121212;
-	color: #ffffff;
-}
-
-.navbar-custom {
-	background-color: var(--navbar-bg);
-	color: var(--navbar-text);
-}
-
-body.light-theme .navbar-custom {
-	--navbar-bg: #f8f9fa;
-	--navbar-text: #000;
-}
-
-body.dark-theme .navbar-custom {
-	--navbar-bg: #343a40;
-	--navbar-text: #fff;
 }
