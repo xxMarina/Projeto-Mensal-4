@@ -5,11 +5,15 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Task Board</title>
 
+		<!--Link dos icones-->
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" />
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+		<!--Link dos css-->
 		<link rel="stylesheet" href="./styles/global.css" />
 		<link rel="stylesheet" href="./styles/taskBoard.css" />
+		<link rel="stylesheet" href="./styles/stars.css" />
+		<link rel="stylesheet" href="./styles/darkLigth.css" />
 	</head>
 	<body>
 		<nav class="navbar navbar-expand-lg navbar-custom">
@@ -24,21 +28,23 @@
 					>
 						Selecionar Board
 					</button>
+					<div class="stars"></div>
 					<ul class="dropdown-menu dropdown-scroll" id="boardsList" aria-labelledby="boardsDropdown"></ul>
 				</div>
-
-				<button id="addBoardButton">Adicioanr Board</button>
+				<div class="stars"></div>
+				<button id="addBoardButton">Adicionar Board</button>
 				<div id="boardContainer"></div>
-
+				<div class="stars"></div>
 				<div class="d-flex align-items-center ms-auto">
 					<span id="userName" class="text-white me-3"></span>
 					<button id="logoutButton" class="btn btn-outline-light">Sair</button>
 				</div>
-
+				<div class="stars"></div>
 				<div class="form-check form-switch ms-3">
 					<input class="form-check-input" type="checkbox" id="themeToggle" />
 					<label class="form-check-label text-white" for="themeToggle"></label>
 				</div>
+				<div class="stars"></div>
 			</div>
 		</nav>
 
@@ -50,5 +56,6 @@
 
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 		<script type="module" src="./scripts/pages/taskBoard.js"></script>
+		<script src="./scripts/pages/stars.js"></script>
 	</body>
 </html>
